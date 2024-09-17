@@ -2,7 +2,7 @@ FROM python:3.11-bookworm
 
 # Install base dependencies
 RUN apt-get update && apt-get install -y libgdal32 libsqlite3-mod-spatialite
-RUN python -m pip install wq gunicorn whitenoise
+RUN python -m pip install 'wq==2.0.0' gunicorn whitenoise
 
 # Install SSH server (for e.g. Azure)
 RUN apt-get install -y openssh-server && echo "root:Docker!" | chpasswd

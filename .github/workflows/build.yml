@@ -34,3 +34,10 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and Publish Dev Container
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: ghcr.io/wq/dev
+          cacheFrom: ghcr.io/wq/dev
+          push: always
