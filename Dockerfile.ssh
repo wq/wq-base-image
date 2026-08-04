@@ -1,0 +1,11 @@
+FROM ghcr.io/wq/base:v3
+
+# Install SSH server (for e.g. Azure)
+RUN apt-get update && \
+    apt-get install -y openssh-server && \
+    echo "root:$(openssl passwd -salt "wq" -1 "Docker!")" | chpasswd -e && \
+    rm -f /var/cache/ldconfig/aux-cache /etc/ssh/ssh_host_* && \
+    truncate -s 0 /etc/machine-id /var/lib/dbus/machine-id && \
+    rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt/history.log /var/log/apt/term.log /var/log/alternatives.log
+
+COPY sshd_config /etc/ssh/

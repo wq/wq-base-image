@@ -1,6 +1,6 @@
 {
     "name": "wq Dev",
-    "image": "ghcr.io/wq/base:main",
+    "image": "ghcr.io/wq/base:v3",
     "features": {
         "ghcr.io/devcontainers/features/common-utils:2": {
             "installZsh": "true",

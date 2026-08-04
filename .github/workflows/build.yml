@@ -1,6 +1,9 @@
 name: Build and Publish Image
 
-on: [push]
+on:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -26,18 +29,44 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/wq/base
-
-      - name: Build and Publish Image
+          tags: |
+            type=semver,pattern=v{{major}}
+            type=semver,pattern={{major}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}}
+      - name: Build and Publish Base Image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
+      - name: Image Tags for Dev Container
+        id: meta-dev
+        run: |
+          echo "tags=$(echo '${{ steps.meta.outputs.tags }}' | sed 's/^ghcr.io\/wq\/base://' | tr '\n' ',' | sed 's/,$//')" >> $GITHUB_OUTPUT
       - name: Build and Publish Dev Container
         uses: devcontainers/ci@v0.3
         with:
           imageName: ghcr.io/wq/dev
+          imageTag: ${{ steps.meta-dev.outputs.tags }}
           cacheFrom: ghcr.io/wq/dev
           push: always
+      - name: Docker metadata for SSH Image
+        id: meta-ssh
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/wq/ssh
+          tags: |
+            type=semver,pattern=v{{major}}
+            type=semver,pattern={{major}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}}
+      - name: Build and Publish SSH Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.ssh
+          push: true
+          tags: ${{ steps.meta-ssh.outputs.tags }}
+          labels: ${{ steps.meta-ssh.outputs.labels }}

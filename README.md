@@ -4,7 +4,7 @@ wq-base-image provides two Docker images for use in developing and deploying geo
 
 # [ghcr.io/wq/base](https://ghcr.io/wq/base)
 
-Base container image with core dependencies.
+Base container image with core dependencies, for use in production.
 
  * Debian 13 (Trixie)
  * Python 3.14
@@ -12,7 +12,10 @@ Base container image with core dependencies.
  * GDAL 3.6
  * SpatialLite 5.1
  * PostgreSQL 17 (Client Only)
- * OpenSSH Server with [configuration for Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/configure-custom-container?tabs=debian&pivots=container-linux#enable-ssh)
+
+# [ghcr.io/wq/ssh](https://ghcr.io/wq/ssh)
+
+Extends base image to add OpenSSH Server and [configuration for Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/configure-custom-container?tabs=debian&pivots=container-linux#enable-ssh)
 
  # [ghcr.io/wq/dev](https://ghcr.io/wq/dev)
 
