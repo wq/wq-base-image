@@ -70,3 +70,5 @@ jobs:
           push: true
           tags: ${{ steps.meta-ssh.outputs.tags }}
           labels: ${{ steps.meta-ssh.outputs.labels }}
+      - name: Summarize Software Versions
+        run: docker run -i --rm ghcr.io/wq/ssh bash < list_versions.sh >> $GITHUB_STEP_SUMMARY
